@@ -14,4 +14,4 @@
 - Input has separate held (`keys`) and edge-triggered (`justPressed`/`pressed`) state. Space intentionally fires once per key press and also restarts from `gameover`.
 - The frame delta is capped at `0.05` seconds. Gameplay and visuals use `Math.random()`, so browser runs are nondeterministic.
 - The game states are `playing`, `dead`, and `gameover`; respawn and restart behavior belongs in that state flow rather than in rendering code.
-- Ignore the README claim about power-ups and special asteroid types: they are not implemented in the current source.
+- Power-ups are implemented: speed boost (V) and triple shot (3). Both drop randomly from destroyed asteroids and last 5 seconds.
