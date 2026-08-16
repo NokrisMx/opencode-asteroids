@@ -55,5 +55,6 @@ El juego incluye 3 skins cosméticas que cambian la silueta, el color y la llama
 - 3 vidas con invencibilidad temporal al reaparecer (parpadeo)
 - Asteroides se parten en fragmentos más pequeños al ser destruidos
 - Partículas de explosión al destruir asteroides
-- **Power-up Velocidad**: al destruir un asteroide hay un 20% de probabilidad de que aparezca un hexágono celeste con "V". Al recogerlo, la nave mueve el doble de rápido durante 5 segundos (doble empuje). Se desvanece si no se recoge en 8 segundos. La llama del propulsor se vuelve celeste mientras el efecto está activo.
+- **Power-up Velocidad**: al destruir un asteroide hay un 10% de probabilidad de que aparezca un hexágono celeste con "V". Al recogerlo, la nave mueve el doble de rápido durante 5 segundos (doble empuje). Se desvanece si no se recoge en 8 segundos. La llama del propulsor se vuelve celeste mientras el efecto está activo.
+- **Power-up Triple Shot**: al destruir un asteroide hay un 10% de probabilidad de que aparezca un hexágono rosa con "3". Al recogerlo, la nave dispara 3 proyectiles en línea recta durante 5 segundos (ráfaga de 3 balas por cada pulsación de espacio). Se desvanece si no se recoge en 8 segundos.
 - **Estrella Fugaz**: un asteroide dorado que aparece una vez por nivel. Se mueve 3 veces más rápido que un asteroide pequeño, desaparece después de 5 segundos y vale 250 puntos. Tiene un brillo distintivo y una estela de fuego. No se divide al destruirlo y no bloquea el avance al siguiente nivel.
