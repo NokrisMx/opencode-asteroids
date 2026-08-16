@@ -37,6 +37,7 @@ Luego visita `http://localhost:3000`.
 | Grande    | 20     |
 | Mediano   | 50     |
 | Pequeño   | 100    |
+| Estrella fugaz | 250 |
 
 ## Características
 
@@ -44,3 +45,4 @@ Luego visita `http://localhost:3000`.
 - Asteroides se parten en fragmentos más pequeños al ser destruidos
 - Partículas de explosión al destruir asteroides
 - **Power-up Velocidad**: al destruir un asteroide hay un 20% de probabilidad de que aparezca un hexágono celeste con "V". Al recogerlo, la nave mueve el doble de rápido durante 5 segundos (doble empuje). Se desvanece si no se recoge en 8 segundos. La llama del propulsor se vuelve celeste mientras el efecto está activo.
+- **Estrella Fugaz**: un asteroide dorado que aparece una vez por nivel. Se mueve 3 veces más rápido que un asteroide pequeño, desaparece después de 5 segundos y vale 250 puntos. Tiene un brillo distintivo y una estela de fuego. No se divide al destruirlo y no bloquea el avance al siguiente nivel.
