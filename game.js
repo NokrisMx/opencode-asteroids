@@ -229,6 +229,7 @@ class Ship {
     this.speedBoostTimer = 0;
     this.tripleShotTimer = 0;
     this.burstQueue = [];
+    this.shieldActive   = false;
   }
 
   update(dt) {
@@ -319,6 +320,15 @@ class Ship {
       ctx.stroke();
     }
 
+    // Escudo: burbuja protectora
+    if (this.shieldActive) {
+      ctx.beginPath();
+      ctx.arc(0, 0, this.radius + 10, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(80, 255, 144, ${0.5 + 0.2 * Math.sin(performance.now() * 0.006)})`;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
     ctx.restore();
   }
 }
@@ -356,7 +366,7 @@ class Particle {
 }
 
 // ── Power-ups ──────────────────────────────────────────────────────────────
-const POWERUP_TYPES = { SPEED: 'speed', TRIPLE_SHOT: 'triple_shot' };
+const POWERUP_TYPES = { SPEED: 'speed', TRIPLE_SHOT: 'triple_shot', SHIELD: 'shield' };
 
 class PowerUp {
   constructor(x, y, type) {
@@ -377,9 +387,8 @@ class PowerUp {
 
   draw() {
     const alpha = this.ttl < 2 ? this.ttl / 2 : 1;
-    const isTriple = this.type === POWERUP_TYPES.TRIPLE_SHOT;
-    const color = isTriple ? '#ff4488' : '#00ccff';
-    const label = isTriple ? '3' : 'V';
+    const color = this.type === POWERUP_TYPES.TRIPLE_SHOT ? '#ff4488' : this.type === POWERUP_TYPES.SHIELD ? '#50ff90' : '#00ccff';
+    const label = this.type === POWERUP_TYPES.TRIPLE_SHOT ? '3' : this.type === POWERUP_TYPES.SHIELD ? 'S' : 'V';
 
     ctx.save();
     ctx.translate(this.x, this.y);
@@ -493,6 +502,7 @@ function killShip() {
   ship.speedBoostTimer = 0;
   ship.tripleShotTimer = 0;
   ship.burstQueue = [];
+  ship.shieldActive = false;
   lives--;
   if (lives <= 0) {
     state = 'gameover';
@@ -549,8 +559,9 @@ function update(dt) {
         score += a.isShootingStar ? a.points : POINTS[a.size];
         explode(a.x, a.y, a.isShootingStar ? 12 : a.size * 5);
         newAsteroids.push(...a.split());
-        if (!a.isShootingStar && Math.random() < 0.2) {
-          const type = Math.random() < 0.5 ? POWERUP_TYPES.SPEED : POWERUP_TYPES.TRIPLE_SHOT;
+        if (!a.isShootingStar && Math.random() < 0.3) {
+          const roll = Math.random();
+          const type = roll < 0.1 ? POWERUP_TYPES.SPEED : roll < 0.2 ? POWERUP_TYPES.TRIPLE_SHOT : POWERUP_TYPES.SHIELD;
           powerUps.push(new PowerUp(a.x, a.y, type));
         }
       }
@@ -563,8 +574,14 @@ function update(dt) {
   if (ship.invincible <= 0) {
     for (const a of asteroids) {
       if (dist(ship, a) < ship.radius + a.radius * 0.82) {
-        killShip();
-        break;
+        if (ship.shieldActive) {
+          ship.shieldActive = false;
+          a.dead = true;
+          explode(a.x, a.y, 8);
+        } else {
+          killShip();
+          break;
+        }
       }
     }
   }
@@ -573,11 +590,9 @@ function update(dt) {
   for (const p of powerUps) {
     if (!p.dead && dist(ship, p) < ship.radius + p.radius) {
       p.dead = true;
-      if (p.type === POWERUP_TYPES.SPEED) {
-        ship.speedBoostTimer = 5;
-      } else if (p.type === POWERUP_TYPES.TRIPLE_SHOT) {
-        ship.tripleShotTimer = 5;
-      }
+      if (p.type === POWERUP_TYPES.SPEED) ship.speedBoostTimer = 5;
+      else if (p.type === POWERUP_TYPES.TRIPLE_SHOT) ship.tripleShotTimer = 5;
+      else if (p.type === POWERUP_TYPES.SHIELD) ship.shieldActive = true;
     }
   }
 
@@ -616,18 +631,28 @@ function drawHUD() {
   for (let i = 0; i < lives; i++)
     drawLifeIcon(W - 16 - i * 22, 18);
 
+  let hudY = H - 18;
   if (ship.speedBoostTimer > 0) {
     ctx.fillStyle   = '#00ccff';
     ctx.font        = '14px monospace';
     ctx.textAlign   = 'center';
-    ctx.fillText(`VELOCIDAD ${ship.speedBoostTimer.toFixed(1)}s`, W / 2, H - 34);
+    ctx.fillText(`VELOCIDAD ${ship.speedBoostTimer.toFixed(1)}s`, W / 2, hudY);
+    hudY -= 18;
   }
 
   if (ship.tripleShotTimer > 0) {
     ctx.fillStyle   = '#ff4488';
     ctx.font        = '14px monospace';
     ctx.textAlign   = 'center';
-    ctx.fillText(`TRIPLE SHOT ${ship.tripleShotTimer.toFixed(1)}s`, W / 2, H - 18);
+    ctx.fillText(`TRIPLE SHOT ${ship.tripleShotTimer.toFixed(1)}s`, W / 2, hudY);
+    hudY -= 18;
+  }
+
+  if (ship.shieldActive) {
+    ctx.fillStyle   = '#50ff90';
+    ctx.font        = '14px monospace';
+    ctx.textAlign   = 'center';
+    ctx.fillText(`ESCUDO ACTIVO`, W / 2, hudY);
   }
 
   ctx.fillStyle   = 'rgba(255,255,255,0.5)';
