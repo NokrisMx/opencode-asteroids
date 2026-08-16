@@ -19,7 +19,6 @@ jobs:
       contents: read
       pull-requests: read
       issues: read
-      comments: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -31,5 +30,4 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          model: openai/gpt-5.6-sol
+          model: openai/gpt-5.5
