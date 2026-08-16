@@ -29,6 +29,17 @@ Luego visita `http://localhost:3000`.
 | `←` `→`   | Rotar nave |
 | `↑`       | Propulsar  |
 | `Espacio` | Disparar   |
+| `S`       | Cambiar skin |
+
+## Skins de la nave
+
+El juego incluye 3 skins cosméticas que cambian la silueta, el color y la llama de la nave. La selección se guarda automáticamente en `localStorage` y persiste al recargar.
+
+| Skin        | Color     | Descripción                     |
+| ----------- | --------- | ------------------------------- |
+| Clásica     | Blanco    | Silueta triángulo con muesca    |
+| Interceptor | Celeste   | Forma afilada y estrecha        |
+| Exploradora | Verde     | Silueta pentagonal asimétrica   |
 
 ## Puntuación
 
